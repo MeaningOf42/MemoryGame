@@ -34,20 +34,21 @@ public class game {
 		int score = 0;
 		boolean wonRound = true;
 		
+		ArrayList<Color> colorsToRemember = new ArrayList<Color>();
+		for (int i = 0; i < difficulty; i++)
+			colorsToRemember.add(colorPalette[randomGen.nextInt(colorPalette.length)]);
 		// Gives instructions and pauses before starting
 		while (wonRound) {
 			// Creates an array of colors of length difficulty, which the player will be shown and have to remember.
 			// All colors are taken randomly from the color palette.
-			Color[] colorsToRemember = new Color[difficulty];
-			for (int i = 0; i < colorsToRemember.length; i++)
-				colorsToRemember[i] = colorPalette[randomGen.nextInt(colorPalette.length)];
+			
 			
 			System.out.println("In 3 seconds a sequence of "+Integer.toString(difficulty)+" colors will be displayed on the finches, remeber the order that colors are displayed: ");
 			finches[0].sleep(3000);
 		
 			// Displays the colors on one finch at a time.
-			for (int i = 0; i < colorsToRemember.length; i++) {
-				finches[i%numFinches].setLED(colorsToRemember[i]);
+			for (int i = 0; i < colorsToRemember.size(); i++) {
+				finches[i%numFinches].setLED(colorsToRemember.get(i));
 				finches[i%numFinches].sleep(500);
 				finches[i%numFinches].setLED(0,0,0);
 				finches[i%numFinches].sleep(500);
@@ -98,6 +99,7 @@ public class game {
 			}
 		
 			if (wonRound) {
+				colorsToRemember.add(colorPalette[randomGen.nextInt(colorPalette.length)]);
 				System.out.println("You remembered the Sequence! Level Up!");
 				difficulty++;
 				System.out.println("Dificulty inreased to: " + Integer.toString(difficulty));
